@@ -1,0 +1,33 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: graylog
+    release: {{ .Release.Name }}
+  name: graylog
+spec:
+  ports:
+  - name: "80"
+    port: 80
+    targetPort: 9000
+  - name: "443"
+    port: 443
+    targetPort: 9000
+  - name: "514"
+    port: 514
+    targetPort: 514
+  - name: 514-udp
+    port: 514
+    protocol: UDP
+    targetPort: 514
+  - name: "12201"
+    port: 12201
+    targetPort: 12201
+  - name: 12201-udp
+    port: 12201
+    protocol: UDP
+    targetPort: 12201
+  selector:
+    app: graylog
+    release: {{ .Release.Name }}
