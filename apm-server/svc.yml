@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: apm-server-uudated
+  namespace: rock-graylog
+  labels:
+    app: apm-server-uudated
+spec:
+  ports:
+  - name: http
+    port: 8200
+    targetPort: 8200
+  selector:
+    app: apm-server-uudated
+  sessionAffinity: None
+  type: ClusterIP

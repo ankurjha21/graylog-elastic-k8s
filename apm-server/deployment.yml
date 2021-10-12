@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apm-server-updated
+  namespace: rock-graylog
+  labels:
+    app: apm-server-updated
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: apm-server-updated
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: apm-server-updated
+    spec:
+      containers:
+      - image: elastic/apm-server:7.15.0
+        imagePullPolicy: IfNotPresent
+        name: apm-server-updated
+        resources:
+          limits:
+            memory: 3000Mi
+            cpu: 10000m
+          requests:
+            cpu: 500m
+            memory: 1000Mi
+        ports:
+        - containerPort: 8200
+          name: apm-port
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /usr/share/apm-server/apm-server.yml
+          name: apm-server-config-updated
+          readOnly: true
+          subPath: apm-server.yml
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: apm-server-config-updated
+        name: apm-server-config-updated
