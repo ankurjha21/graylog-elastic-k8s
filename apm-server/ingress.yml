@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: apm-ingress-updated
+  namespace: rock-graylog
+  labels:
+    app: apm-server-updated
+    role: apm-ingress-updated
+  annotations:
+    nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+    nginx.ingress.kubernetes.io/cors-allow-methods: PUT, GET, POST, OPTIONS
+    nginx.ingress.kubernetes.io/cors-allow-origin: '*'
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+spec:
+  rules:
+  - host: apm-latest.mgmt.linkfire.co
+    http:
+      paths:
+      - backend:
+          serviceName: apm-server-uudated
+          servicePort: 8200
+        path: /
